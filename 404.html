@@ -1,9 +1,27 @@
-<script>
-    window.onload = () => {
-        currentURL = window.location.href;
-        lowerCaseURL = currentURL.toLowerCase();
-        if (currentURL != lowerCaseURL) {
-            location.replace(lowerCaseURL);
-        }
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting...</title>
+  <script>
+    window.onload = function() {
+      var path = window.location.pathname;
+      var correctRepo = "MSM_Portfolio"; // Your exact repository name
+      var baseUrl = "https://muthu545.github.io/";
+      
+      // Define a regex pattern that matches the known typos and variations
+      // This matches: MSM_porfolio, MSM_portifolio, MSM_Portifolio, MSM_portfolio, etc.
+      // The 'i' flag makes it case-insensitive, but we specifically target common typos here.
+      var typoPattern = /\/MSM_(porfolio|portifolio|Portfolio|portfolio)\//i;
+
+      if (typoPattern.test(path)) {
+        // Replace any matching variation with the correct name
+        var correctPath = path.replace(typoPattern, "/" + correctRepo + "/");
+        window.location.replace(baseUrl + correctPath);
+      }
     };
-</script>
+  </script>
+</head>
+<body>
+  <p>Redirecting to the correct site...</p>
+</body>
+</html>   
