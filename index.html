@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muthu Saravanan Manoharan — Bioinformatics Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1F1C;
+    --bg-raised:#0F2622;
+    --paper:#F4EFE6;
+    --paper-dim:#C9C2B3;
+    --signal:#D4452C;
+    --sage:#5B8C7B;
+    --amber:#C9A227;
+    --line:rgba(244,239,230,0.14);
+    --line-strong:rgba(244,239,230,0.28);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 48px;}
+  ::selection{background:var(--signal);color:var(--paper);}
+
+  a{color:inherit;text-decoration:none;}
+
+  /* ---- Top bar ---- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(11,31,28,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    transform:translateY(-100%);
+    transition:transform .4s ease;
+  }
+  .topbar.show{transform:translateY(0);}
+  .topbar-inner{
+    max-width:1080px;margin:0 auto;padding:16px 48px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .topbar-name{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.02em;color:var(--paper-dim);}
+  .topbar-nav{display:flex;gap:28px;font-size:13px;font-family:'JetBrains Mono',monospace;}
+  .topbar-nav a{color:var(--paper-dim);transition:color .2s;}
+  .topbar-nav a:hover{color:var(--signal);}
+
+  /* ---- Hero ---- */
+  .hero{
+    padding:140px 0 80px;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--sage);
+    margin-bottom:24px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{
+    content:'';width:24px;height:1px;background:var(--sage);display:inline-block;
+  }
+  h1.name{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(42px,6vw,76px);
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    margin-bottom:6px;
+  }
+  .role{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(20px,2.4vw,28px);
+    color:var(--paper-dim);
+    margin-bottom:36px;
+  }
+  .hero-summary{
+    max-width:680px;
+    font-size:17px;
+    line-height:1.7;
+    color:rgba(244,239,230,0.85);
+    margin-bottom:40px;
+  }
+  .hero-summary strong{color:var(--paper);font-weight:500;}
+  .contact-row{
+    display:flex;flex-wrap:wrap;gap:28px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--paper-dim);
+  }
+  .contact-row a{border-bottom:1px solid transparent;transition:border-color .2s, color .2s;padding-bottom:2px;}
+  .contact-row a:hover{color:var(--signal);border-color:var(--signal);}
+
+  /* ---- Section scaffolding ---- */
+  section{padding:90px 0;border-top:1px solid var(--line);}
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:48px;
+    flex-wrap:wrap;gap:12px;
+  }
+  h2.section-title{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(28px,3.4vw,38px);
+    letter-spacing:-0.01em;
+  }
+  .section-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--paper-dim);
+    letter-spacing:0.05em;
+  }
+
+  /* ---- Genomic track timeline (signature element) ---- */
+  .track-scroll{
+    overflow-x:auto;
+    padding-bottom:18px;
+    margin:0 -48px;
+    padding-left:48px;
+    padding-right:48px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .track-scroll::-webkit-scrollbar{height:6px;}
+  .track-scroll::-webkit-scrollbar-track{background:rgba(244,239,230,0.06);}
+  .track-scroll::-webkit-scrollbar-thumb{background:var(--sage);border-radius:3px;}
+
+  .track-ruler{
+    display:flex;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--paper-dim);
+    min-width:1480px;
+    border-bottom:1px solid var(--line-strong);
+    padding-bottom:6px;
+    margin-bottom:14px;
+  }
+  .ruler-tick{flex:0 0 auto;width:74px;}
+
+  .track-row{
+    display:flex;
+    min-width:1480px;
+    position:relative;
+    height:58px;
+    margin-bottom:10px;
+  }
+  .track-label{
+    position:absolute;
+    left:-48px;
+    top:0;
+    width:0;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0;
+  }
+  .seg{
+    position:absolute;
+    top:6px;height:46px;
+    border-radius:5px;
+    display:flex;align-items:center;
+    padding:0 14px;
+    font-size:12.5px;
+    font-weight:500;
+    white-space:nowrap;
+    cursor:default;
+    transition:transform .18s ease, box-shadow .18s ease;
+    border:1px solid rgba(0,0,0,0.15);
+  }
+  .seg:hover{transform:translateY(-3px);}
+  .seg .seg-sub{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:400;
+    font-size:10.5px;
+    opacity:0.75;
+    margin-left:8px;
+  }
+  .seg-fellow{background:var(--sage);color:#0B1F1C;}
+  .seg-scientist{background:#7CA796;color:#0B1F1C;}
+  .seg-senior{background:var(--signal);color:#1A0905;}
+  .seg-cleveland{background:rgba(244,239,230,0.18);color:var(--paper);border-style:dashed;}
+  .seg-edu{background:rgba(244,239,230,0.1);color:var(--paper-dim);border-style:dashed;}
+
+  .track-row-names{
+    display:flex;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--paper-dim);
+    min-width:1480px;
+    margin-bottom:24px;
+  }
+
+  .legend{
+    display:flex;gap:24px;flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;color:var(--paper-dim);
+    margin-top:8px;
+  }
+  .legend span{display:flex;align-items:center;gap:7px;}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block;}
+
+  /* ---- Domains / research areas ---- */
+  .domains-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .adjacent-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .domain-card{
+    background:var(--bg);
+    padding:28px 22px;
+    transition:background .25s ease;
+  }
+  .domain-card:hover{background:var(--bg-raised);}
+  .domain-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:var(--sage);
+    margin-bottom:14px;
+  }
+  .domain-name{
+    font-family:'Fraunces',serif;
+    font-size:19px;font-weight:500;
+    margin-bottom:8px;
+  }
+  .domain-desc{font-size:13px;line-height:1.6;color:var(--paper-dim);}
+
+  /* ---- Multiomics cluster (skills visualization) ---- */
+  .cluster-wrap{
+    display:flex;gap:56px;flex-wrap:wrap;
+  }
+  .cluster-col{flex:1;min-width:220px;}
+  .cluster-head{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--sage);
+    margin-bottom:18px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--line-strong);
+  }
+  .pill-cloud{display:flex;flex-wrap:wrap;gap:8px;}
+  .pill{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    padding:6px 12px;
+    border:1px solid var(--line-strong);
+    border-radius:4px;
+    color:var(--paper);
+    background:rgba(244,239,230,0.03);
+    transition:border-color .2s, background .2s;
+  }
+  .pill:hover{border-color:var(--signal);background:rgba(212,69,44,0.08);}
+  .pill.lang{border-color:var(--amber);color:var(--amber);}
+  .pill.exploratory{border-style:dashed;color:var(--paper-dim);}
+
+  /* ---- Publications ---- */
+  .pub-list{display:flex;flex-direction:column;}
+  .pub{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:28px;
+    padding:30px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .pub:first-child{padding-top:0;}
+  .pub-year{
+    font-family:'Fraunces',serif;
+    font-size:34px;font-weight:400;
+    color:var(--paper-dim);
+  }
+  .pub-journal{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;color:var(--sage);
+    text-transform:uppercase;letter-spacing:0.04em;
+    margin-bottom:10px;
+  }
+  .pub-title{
+    font-size:17px;line-height:1.45;
+    font-weight:500;
+    margin-bottom:10px;
+    max-width:600px;
+  }
+  .pub-meta{
+    font-size:13px;color:var(--paper-dim);line-height:1.6;
+    margin-bottom:10px;
+  }
+  .award-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:var(--amber);
+    border:1px solid rgba(201,162,39,0.4);
+    border-radius:3px;
+    padding:4px 10px;
+    margin-top:4px;
+  }
+  .pub-link{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;color:var(--paper-dim);
+    border-bottom:1px solid var(--line-strong);
+  }
+  .pub-link:hover{color:var(--signal);border-color:var(--signal);}
+
+  /* ---- Path / education timeline ---- */
+  .path-list{position:relative;padding-left:32px;}
+  .path-list::before{
+    content:'';position:absolute;left:5px;top:8px;bottom:8px;width:1px;
+    background:var(--line-strong);
+  }
+  .path-item{position:relative;padding-bottom:34px;}
+  .path-item:last-child{padding-bottom:0;}
+  .path-dot{
+    position:absolute;left:-32px;top:5px;
+    width:11px;height:11px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--sage);
+  }
+  .path-date{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;color:var(--paper-dim);
+    margin-bottom:4px;
+  }
+  .path-title{font-size:15.5px;font-weight:500;margin-bottom:3px;}
+  .path-org{font-size:13.5px;color:var(--paper-dim);font-style:italic;}
+
+  /* ---- Footer ---- */
+  footer{
+    padding:60px 0 50px;
+    border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:16px;
+  }
+  .footer-name{font-family:'Fraunces',serif;font-size:18px;}
+  .footer-links{display:flex;gap:24px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--paper-dim);}
+  .footer-links a:hover{color:var(--signal);}
+
+  /* ---- Achievements (stat band) ---- */
+  .stat-band{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:48px;
+  }
+  .stat-cell{
+    background:var(--bg);
+    padding:26px 20px;
+    text-align:left;
+  }
+  .stat-num{
+    font-family:'Fraunces',serif;
+    font-size:clamp(28px,3.2vw,40px);
+    font-weight:500;
+    color:var(--signal);
+    line-height:1;
+    margin-bottom:8px;
+  }
+  .stat-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--paper-dim);
+    line-height:1.5;
+  }
+  .achieve-list{display:flex;flex-direction:column;gap:0;}
+  .achieve-item{
+    display:flex;gap:18px;
+    padding:18px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .achieve-item:last-child{border-bottom:none;}
+  .achieve-mark{
+    flex:0 0 auto;
+    width:22px;height:22px;
+    border-radius:50%;
+    border:1px solid var(--sage);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:var(--sage);
+    margin-top:2px;
+  }
+  .achieve-text{font-size:14.5px;line-height:1.65;color:rgba(244,239,230,0.9);}
+  .achieve-text strong{color:var(--paper);font-weight:500;}
+
+  /* ---- Grants ---- */
+  .grants-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .grant-card{background:var(--bg);padding:26px 22px;transition:background .25s ease;}
+  .grant-card:hover{background:var(--bg-raised);}
+  .grant-org{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:0.06em;text-transform:uppercase;
+    color:var(--amber);margin-bottom:12px;
+  }
+  .grant-title{font-family:'Fraunces',serif;font-size:17px;font-weight:500;margin-bottom:10px;line-height:1.3;}
+  .grant-desc{font-size:13px;line-height:1.6;color:var(--paper-dim);}
+
+  /* ---- Collaboration ---- */
+  .collab-stat{
+    display:flex;align-items:baseline;gap:20px;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+  }
+  .collab-num{
+    font-family:'Fraunces',serif;
+    font-size:clamp(48px,6vw,72px);
+    font-weight:500;color:var(--signal);line-height:1;
+  }
+  .collab-sub{font-size:14.5px;color:var(--paper-dim);max-width:380px;line-height:1.6;}
+  .collab-names{display:flex;flex-wrap:wrap;gap:10px;}
+  .collab-name{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    padding:8px 14px;
+    border:1px solid var(--line-strong);
+    border-radius:4px;
+    color:var(--paper);
+    background:rgba(244,239,230,0.03);
+  }
+
+  /* ---- Selected Projects (cards) ---- */
+  .project-list{display:flex;flex-direction:column;}
+  .project-card{
+    padding:28px 0;
+    border-bottom:1px solid var(--line);
+    display:grid;
+    grid-template-columns:48px 1fr;
+    gap:24px;
+  }
+  .project-card:first-child{padding-top:0;}
+  .project-card:last-child{border-bottom:none;}
+  .project-index{
+    font-family:'Fraunces',serif;
+    font-size:30px;color:var(--paper-dim);font-weight:400;
+  }
+  .project-title{font-size:17px;font-weight:500;margin-bottom:8px;}
+  .project-desc{font-size:14px;line-height:1.65;color:rgba(244,239,230,0.85);margin-bottom:10px;}
+  .project-tag{
+    display:inline-flex;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:var(--sage);
+    border:1px solid rgba(91,140,123,0.4);
+    border-radius:3px;padding:3px 9px;margin-right:8px;
+  }
+
+  /* ---- Secondary publications (lighter list) ---- */
+  .pub-secondary-list{margin-top:8px;}
+  .pub-secondary{
+    font-size:13px;line-height:1.6;color:var(--paper-dim);
+    padding:12px 0;border-bottom:1px solid var(--line);
+  }
+  .pub-secondary:last-child{border-bottom:none;}
+  .pub-secondary strong{color:var(--paper);}
+
+  @media (max-width:860px){
+    .stat-band{grid-template-columns:1fr 1fr;}
+    .grants-grid{grid-template-columns:1fr;}
+    .project-card{grid-template-columns:32px 1fr;}
+    .wrap{padding:0 24px;}
+    .topbar-inner{padding:14px 24px;}
+    .topbar-nav{display:none;}
+    .hero{padding:110px 0 60px;}
+    .domains-grid{grid-template-columns:1fr 1fr;}
+    .adjacent-grid{grid-template-columns:1fr;}
+    .pub{grid-template-columns:1fr;gap:6px;}
+    .pub-year{font-size:22px;}
+    .cluster-wrap{gap:36px;}
+    .track-scroll{margin:0 -24px;padding-left:24px;padding-right:24px;}
+  }
+  @media (max-width:560px){
+    .domains-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-name">Muthu Saravanan Manoharan</div>
+    <nav class="topbar-nav">
+      <a href="#achievements">Achievements</a>
+      <a href="#grants">Grants</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#projects">Projects</a>
+      <a href="#domains">Research</a>
+      <a href="#skills">Skills</a>
+      <a href="#publications">Publications</a>
+      <a href="#path">Path</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Bioinformatics portfolio</div>
+    <h1 class="name">Muthu Saravanan<br>Manoharan</h1>
+    <div class="role">Senior Bioinformatician / Research Scientist</div>
+    <p class="hero-summary">
+      Fifteen years building <strong>multiomics pipelines</strong> — RNA-seq, single-cell, proteomics, epigenetics, metagenomics —
+      on Linux HPC systems at <strong>UTHSCSA</strong> and the South Texas Veterans Health Care System. My pipeline work has
+      supported research into HIV, COVID-19, aging, and allergy, with results published in <strong>Nature Communications</strong>,
+      <strong>Aging Cell</strong>, <strong>PNAS</strong>, and <strong>JACI</strong> — cited 950+ times on Google Scholar.
+    </p>
+    <div class="contact-row">
+      <span>(936) 645-1338</span>
+      <a href="mailto:msm545@gmx.com">msm545@gmx.com</a>
+      <a href="https://www.linkedin.com/in/muthusaravananmanoharan/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://scholar.google.com/citations?hl=en&user=24xinGsAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener">Google Scholar</a>
+      <span>San Antonio, TX</span>
+    </div>
+  </header>
+
+  <section id="achievements">
+    <div class="section-head">
+      <h2 class="section-title">Achievements</h2>
+      <span class="section-tag">leadership &amp; impact</span>
+    </div>
+
+    <div class="stat-band">
+      <div class="stat-cell">
+        <div class="stat-num">950+</div>
+        <div class="stat-label">citations on Google Scholar</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">6</div>
+        <div class="stat-label">projects led pipeline-to-outcome</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">10,000+</div>
+        <div class="stat-label">COVID-19 patient samples coordinated</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">~10</div>
+        <div class="stat-label">junior fellows &amp; trainees mentored</div>
+      </div>
+    </div>
+
+    <div class="achieve-list">
+      <div class="achieve-item">
+        <div class="achieve-mark">&#9733;</div>
+        <div class="achieve-text">Published in top-tier journals including <strong>Nature Communications</strong> (Top 25 COVID-19 Articles of 2023), <strong>Aging Cell</strong> (2025 Anatomical Society Best Paper Prize), <strong>PNAS</strong>, and <strong>JACI</strong>.</div>
+      </div>
+      <div class="achieve-item">
+        <div class="achieve-mark">&#9733;</div>
+        <div class="achieve-text">Helped secure research funding from the <strong>Department of Veterans Affairs</strong>, <strong>NIH/NIAID</strong>, and the <strong>U.S. Air Force 59th Medical Wing (DoD)</strong>, contributing preliminary data, methods development, and narrative cross-checking across funding applications.</div>
+      </div>
+      <div class="achieve-item">
+        <div class="achieve-mark">&#9733;</div>
+        <div class="achieve-text"><strong>Co-Investigator</strong> on a NIAID-funded U01 clinical trial grant (Allergy-Asthma), overseeing sample processing, storage, electronic logs, and transcriptomics pipeline support.</div>
+      </div>
+      <div class="achieve-item">
+        <div class="achieve-mark">&#9733;</div>
+        <div class="achieve-text">Led <strong>6 projects</strong> from pipeline design through published or completed outcome, spanning immune resilience/aging, allergy, COVID-19 patient monitoring, public-dataset signature validation, HIV transcriptomics, and DoD human-performance data collection.</div>
+      </div>
+      <div class="achieve-item">
+        <div class="achieve-mark">&#9733;</div>
+        <div class="achieve-text">Coordinated informal training for approximately <strong>10 junior fellows, students, and trainees</strong> on lab-established bioinformatics pipelines.</div>
+      </div>
+      <div class="achieve-item">
+        <div class="achieve-mark">&#9733;</div>
+        <div class="achieve-text">Coordinated day-to-day work across a rotating team of <strong>6–8 lab personnel</strong>; instrumental in the collection and storage of <strong>10,000+ COVID-19 patient samples</strong> in coordination with medical teams, pathology lab staff, and outpatient nursing.</div>
+      </div>
+      <div class="achieve-item">
+        <div class="achieve-mark">&#9733;</div>
+        <div class="achieve-text">Developed a <strong>Shiny dashboard</strong> using de-identified COVID-19 patient data to support physician treatment and triage decisions during the pandemic.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="grants">
+    <div class="section-head">
+      <h2 class="section-title">Grants &amp; funding</h2>
+      <span class="section-tag">contributions to procurement</span>
+    </div>
+    <div class="grants-grid">
+      <div class="grant-card">
+        <div class="grant-org">NIH / NIAID</div>
+        <div class="grant-title">U01 Clinical Trial Grant — Allergy-Asthma</div>
+        <div class="grant-desc">Co-Investigator. Helped secure the grant; oversee sample processing, storage, electronic logs, and transcriptomics pipeline support for the trial.</div>
+      </div>
+      <div class="grant-card">
+        <div class="grant-org">Department of Veterans Affairs</div>
+        <div class="grant-title">VA Center Grant</div>
+        <div class="grant-desc">Provided preliminary data and analysis from the HIV transcriptomics pipeline, plus methods write-up and narrative cross-checking, in support of grant procurement.</div>
+      </div>
+      <div class="grant-card">
+        <div class="grant-org">VA / NIH</div>
+        <div class="grant-title">Co-Funded COVID-19 Grant</div>
+        <div class="grant-desc">A separate, distinct grant from the VA Center Grant above — co-funded by the VA and NIH in support of COVID-19 research.</div>
+      </div>
+      <div class="grant-card">
+        <div class="grant-org">U.S. Air Force — 59th Medical Wing (DoD)</div>
+        <div class="grant-title">Human Performance Grants — Exercise, Trauma, Heat Stress, Spatial Disorientation</div>
+        <div class="grant-desc">Provided preliminary data from the signature-score pipeline plus write-up contribution across all four grants. For the Exercise grant specifically, led sample collection, informed consent, HIPAA logs, and participant roster coordination start to end.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="collaboration">
+    <div class="section-head">
+      <h2 class="section-title">Collaboration</h2>
+      <span class="section-tag">across departments &amp; institutions</span>
+    </div>
+    <div class="collab-stat">
+      <div class="collab-num">30+</div>
+      <div class="collab-sub">cross-departmental and external research collaborations at UTHSCSA, the VA, and partner institutions, spanning 2011 to present.</div>
+    </div>
+    <div class="collab-names">
+      <span class="collab-name">Dr. Sunil Ahuja — Medicine, Infectious Diseases</span>
+      <span class="collab-name">Dr. Grace Lee — Pharmacotherapy, UT Austin</span>
+      <span class="collab-name">Dr. Marcos Restrepo — Pulmonary &amp; Critical Care</span>
+      <span class="collab-name">Dr. Robert Clark — Medicine, UTHSCSA</span>
+      <span class="collab-name">Dr. Alakesh Bera — USUHS (previously UTHSCSA)</span>
+      <span class="collab-name">Dr. Adrian Hayday — King's College London</span>
+      <span class="collab-name">Dr. Guido Silvestri — Yerkes National Primate Research Center</span>
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="section-head">
+      <h2 class="section-title">Career track</h2>
+      <span class="section-tag">UTHSCSA / CPM &middot; 06/2011 — present</span>
+    </div>
+    <div class="track-scroll">
+      <div class="track-ruler">
+        <div class="ruler-tick">2011</div>
+        <div class="ruler-tick">2012</div>
+        <div class="ruler-tick">2013</div>
+        <div class="ruler-tick">2014</div>
+        <div class="ruler-tick">2015</div>
+        <div class="ruler-tick">2016</div>
+        <div class="ruler-tick">2017</div>
+        <div class="ruler-tick">2018</div>
+        <div class="ruler-tick">2019</div>
+        <div class="ruler-tick">2020</div>
+        <div class="ruler-tick">2021</div>
+        <div class="ruler-tick">2022</div>
+        <div class="ruler-tick">2023</div>
+        <div class="ruler-tick">2024</div>
+        <div class="ruler-tick">2025</div>
+        <div class="ruler-tick">2026</div>
+        <div class="ruler-tick">2027</div>
+        <div class="ruler-tick">2028</div>
+        <div class="ruler-tick">2029</div>
+        <div class="ruler-tick">2030</div>
+      </div>
+
+      <div class="track-row">
+        <div class="seg seg-cleveland" style="left:0px;width:74px;" title="Cleveland Clinic Foundation, 03/2011–05/2011">Cleveland</div>
+        <div class="seg seg-fellow" style="left:80px;width:160px;">Research Fellow<span class="seg-sub">'11–'13</span></div>
+        <div class="seg seg-scientist" style="left:246px;width:355px;">Research Scientist<span class="seg-sub">07/'13–04/'18</span></div>
+        <div class="seg seg-senior" style="left:607px;width:589px;">Research Scientist&#8209;Senior<span class="seg-sub">04/'18–present</span></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--sage)"></i>Research Fellow — host genetics, HIV pathogenesis (Dr. Sunil Ahuja)</span>
+      <span><i style="background:#7CA796"></i>Research Scientist — multiomics pipeline build-out</span>
+      <span><i style="background:var(--signal)"></i>Research Scientist&#8209;Senior — leading transcriptomics / proteomics / metabolomics projects</span>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-head">
+      <h2 class="section-title">Selected projects</h2>
+      <span class="section-tag">pipeline to outcome, start to end</span>
+    </div>
+    <div class="project-list">
+
+      <div class="project-card">
+        <div class="project-index">01</div>
+        <div>
+          <div class="project-title">Immune resilience signature — Aging Cell 2025</div>
+          <div class="project-desc">Built the pipeline and ran the analysis that produced the immune resilience signature, using the Framingham Heart Study cohort (approximately 2,306 participants). Found a 15-year survival difference between optimal and extreme immune-resilience-degraded groups. Took the project from pipeline design through to publication.</div>
+          <div class="project-desc" style="margin-top:10px;">Related disease-association findings from the same paper, each tied to its own cohort: cardiovascular disease risk in the <strong>same Framingham Heart Study cohort</strong>; metabolic syndrome association in a <strong>separate cohort</strong>; and obesity evaluated independently in both the <strong>COVID-19 patient cohort</strong> and the <strong>metabolic syndrome cohort</strong>.</div>
+          <span class="project-tag">Aging Cell 2025</span>
+          <span class="project-tag">Best Paper Prize</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-index">02</div>
+        <div>
+          <div class="project-title">Epithelial barrier function in allergic rhinoconjunctivitis — JACI 2017</div>
+          <div class="project-desc">Led the transcriptomics pipeline analyzing epithelial barrier function and inflammation in response to house dust mite challenge, from pipeline build through to published finding.</div>
+          <span class="project-tag">JACI 2017</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-index">03</div>
+        <div>
+          <div class="project-title">COVID-19 patient sample collection &amp; Shiny monitoring dashboard</div>
+          <div class="project-desc">Coordinated the collection and storage of 10,000+ COVID-19 patient samples with medical teams, pathology lab staff, and outpatient nursing. Built a Shiny dashboard on de-identified data to support physician treatment and triage decisions during the pandemic — a standalone project distinct from the Nature Communications 2023 paper.</div>
+          <span class="project-tag">10,000+ samples</span>
+          <span class="project-tag">Shiny dashboard</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-index">04</div>
+        <div>
+          <div class="project-title">Signature-score pipeline validated across public datasets</div>
+          <div class="project-desc">Built and tested a signature-score pipeline across public datasets (GEO, ArrayExpress, dbGaP). The validated pipeline fed preliminary data into four DoD-funded projects evaluating elite human performance in military personnel: trauma, heat stress, exercise, and spatial disorientation.</div>
+          <span class="project-tag">GEO / ArrayExpress / dbGaP</span>
+          <span class="project-tag">4 DoD projects</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-index">05</div>
+        <div>
+          <div class="project-title">HIV transcriptomics pipeline — VA Center grant</div>
+          <div class="project-desc">Built the HIV transcriptomics pipeline that provided preliminary data used to help secure a VA Center grant. The PNAS 2015 CCR5/HIV epigenetics paper is one downstream output of this larger pipeline effort.</div>
+          <span class="project-tag">VA Center grant</span>
+          <span class="project-tag">PNAS 2015 (partial)</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-index">06</div>
+        <div>
+          <div class="project-title">59th Medical Wing (DoD/USAF) Exercise grant — sample operations</div>
+          <div class="project-desc">Led sample collection, informed consent, HIPAA form logs, and the participant roster/master list for the Exercise grant, coordinating internal UTHSCSA stakeholders and external USAF personnel.</div>
+          <span class="project-tag">DoD / USAF</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="domains">
+    <div class="section-head">
+      <h2 class="section-title">Research domains</h2>
+      <span class="section-tag">what the pipelines have served</span>
+    </div>
+    <div class="domains-grid">
+      <div class="domain-card">
+        <div class="domain-num">01</div>
+        <div class="domain-name">HIV</div>
+        <div class="domain-desc">Epigenetic and transcriptomic interactions during HIV pathogenesis; CCR5 coreceptor regulation (PNAS 2015).</div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-num">02</div>
+        <div class="domain-name">COVID-19</div>
+        <div class="domain-desc">Immune resilience and survival advantage during the pandemic (Nature Communications 2023, JACI 2021).</div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-num">03</div>
+        <div class="domain-name">Aging</div>
+        <div class="domain-desc">Immunological resilience and salutogenesis in healthy aging (Aging Cell 2025, Best Paper Prize).</div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-num">04</div>
+        <div class="domain-name">Allergy</div>
+        <div class="domain-desc">Epithelial barrier function in resistance to allergic rhinoconjunctivitis (JACI 2017).</div>
+      </div>
+    </div>
+    <p style="margin-top:24px;font-size:14px;color:var(--paper-dim);max-width:680px;line-height:1.7;">
+      Currently spearheading projects on allergy, obesity, and flu pathogenesis, alongside ongoing HIV research and
+      DoD-funded work investigating immune resilience under exercise, trauma, spatial disorientation, and chronic heat stress.
+    </p>
+
+    <div style="margin-top:48px;">
+      <div class="cluster-head" style="margin-bottom:18px;">Adjacent &amp; exploratory research</div>
+      <div class="adjacent-grid" style="opacity:0.92;">
+        <div class="domain-card" style="border-style:dashed;">
+          <div class="domain-num">A1</div>
+          <div class="domain-name">Vaccine Response</div>
+          <div class="domain-desc">Immune resilience and salutogenesis effects on vaccine responsiveness across multiple vaccine types, including flu and COVID-19, analyzed within the Aging Cell 2025 / Nature Communications 2023 publications.</div>
+        </div>
+        <div class="domain-card" style="border-style:dashed;">
+          <div class="domain-num">A2</div>
+          <div class="domain-name">Cancer &amp; Oncology</div>
+          <div class="domain-desc">Pancreatic cancer miRNA/RNA-seq analysis (published, PLOS ONE 2014) and breast cancer recurrence biomarkers (published, Military Medicine 2020). Lung adenocarcinoma and a pan-cancer analysis of malignant hyperthermia susceptibility genes (RYR1, CACNA1S) are exploratory and unpublished.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-head">
+      <h2 class="section-title">Multiomics &amp; tooling</h2>
+      <span class="section-tag">grouped by what each tool is for</span>
+    </div>
+    <div class="cluster-wrap">
+      <div class="cluster-col">
+        <div class="cluster-head">Omics layers</div>
+        <div class="pill-cloud">
+          <span class="pill">Transcriptomics</span>
+          <span class="pill">Single-cell RNA-seq</span>
+          <span class="pill">Proteomics</span>
+          <span class="pill">Epigenetics</span>
+          <span class="pill">Metabolomics</span>
+          <span class="pill">Metagenomics</span>
+          <span class="pill">Genomics</span>
+        </div>
+      </div>
+      <div class="cluster-col">
+        <div class="cluster-head">Languages &amp; infra</div>
+        <div class="pill-cloud">
+          <span class="pill lang">Python</span>
+          <span class="pill lang">CRAN&#8209;R</span>
+          <span class="pill lang">Shell scripting</span>
+          <span class="pill">Linux HPC</span>
+          <span class="pill">Docker</span>
+          <span class="pill">Singularity / Apptainer</span>
+          <span class="pill">Conda / Bioconda</span>
+          <span class="pill exploratory">Git (familiarity)</span>
+          <span class="pill exploratory">Nextflow (familiarity)</span>
+          <span class="pill exploratory">PyTorch / NumPy (exploratory)</span>
+        </div>
+      </div>
+      <div class="cluster-col">
+        <div class="cluster-head">Pipeline &amp; alignment</div>
+        <div class="pill-cloud">
+          <span class="pill">HISAT2</span>
+          <span class="pill">TopHat</span>
+          <span class="pill">Cufflinks</span>
+          <span class="pill">BWA</span>
+          <span class="pill">Bowtie / Bowtie2</span>
+          <span class="pill">GATK</span>
+          <span class="pill">SAMtools</span>
+          <span class="pill">Picard</span>
+          <span class="pill">HTSeq</span>
+          <span class="pill">Cell Ranger</span>
+          <span class="pill">FastQC</span>
+          <span class="pill">MultiQC</span>
+          <span class="pill">Cutadapt</span>
+          <span class="pill">RSeQC</span>
+          <span class="pill">MACS / CEAS</span>
+          <span class="pill">HOMER</span>
+          <span class="pill">bcftools</span>
+          <span class="pill">bedtools</span>
+          <span class="pill">Monocle</span>
+          <span class="pill exploratory">minimap2 (exploratory)</span>
+          <span class="pill exploratory">DeepVariant (exploratory)</span>
+          <span class="pill exploratory">DRAGEN (exploratory)</span>
+        </div>
+      </div>
+      <div class="cluster-col">
+        <div class="cluster-head">Analysis &amp; visualization</div>
+        <div class="pill-cloud">
+          <span class="pill">DESeq / DESeq2</span>
+          <span class="pill">Seurat</span>
+          <span class="pill">limma</span>
+          <span class="pill">ClusterProfiler</span>
+          <span class="pill">WGCNA</span>
+          <span class="pill">GSEA</span>
+          <span class="pill">IPA</span>
+          <span class="pill">Cytoscape</span>
+          <span class="pill">Circos / Rcircos</span>
+          <span class="pill">ggplot2</span>
+          <span class="pill exploratory">JMP Genomics (exploratory)</span>
+          <span class="pill">STRING / GeneMania</span>
+          <span class="pill">DAVID / Partek</span>
+          <span class="pill">KEGG / MSigDB</span>
+          <span class="pill">PCA / UMAP</span>
+          <span class="pill">Hierarchical clustering</span>
+          <span class="pill">Regression (linear / logistic / GEE)</span>
+          <span class="pill">lattice / gplots</span>
+          <span class="pill">BiodiversityR</span>
+          <span class="pill">enrichplot</span>
+          <span class="pill exploratory">BLAST (exploratory)</span>
+          <span class="pill exploratory">PDB / Pfam (exploratory)</span>
+          <span class="pill exploratory">XGBoost (exploratory)</span>
+        </div>
+      </div>
+      <div class="cluster-col">
+        <div class="cluster-head">Additional tools &amp; platforms</div>
+        <div class="pill-cloud">
+          <span class="pill">StringTie / Ballgown</span>
+          <span class="pill">MetaPhlAn / HUMAnN</span>
+          <span class="pill">Olink</span>
+          <span class="pill">Somascan / Metabolon</span>
+          <span class="pill">UCSC / WashU Browser</span>
+          <span class="pill">IGV</span>
+          <span class="pill">Microsoft Excel</span>
+          <span class="pill">Power Query</span>
+          <span class="pill exploratory">Power BI (basic)</span>
+          <span class="pill exploratory">AWS S3 (data access only)</span>
+          <span class="pill exploratory">Illumina BaseSpace (exposure)</span>
+          <span class="pill exploratory">cBioPortal (minimal exposure)</span>
+          <span class="pill exploratory">ChIP-PCR (wet-lab, 2011)</span>
+          <span class="pill">Adobe Illustrator</span>
+          <span class="pill">Uniprot</span>
+          <span class="pill">REST API</span>
+        </div>
+      </div>
+      <div class="cluster-col">
+        <div class="cluster-head">Leadership &amp; ways of working</div>
+        <div class="pill-cloud">
+          <span class="pill">Independent project ownership</span>
+          <span class="pill">Cross-functional collaboration</span>
+          <span class="pill">Informal team coordination</span>
+          <span class="pill">Mentoring / training</span>
+          <span class="pill">Scientific communication</span>
+          <span class="pill">Organizational rigor under regulation</span>
+          <span class="pill">Adaptability across domains</span>
+          <span class="pill">Self-motivation / initiative</span>
+          <span class="pill">Problem-solving / troubleshooting</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="publications">
+    <div class="section-head">
+      <h2 class="section-title">Selected publications</h2>
+      <span class="section-tag">core 6 + 7 additional</span>
+    </div>
+    <div class="pub-list">
+
+      <div class="pub">
+        <div class="pub-year">2025</div>
+        <div>
+          <div class="pub-journal">Aging Cell</div>
+          <div class="pub-title">The 15-Year Survival Advantage: Immune Resilience as a Salutogenic Force in Healthy Aging</div>
+          <div class="pub-meta"><strong>Manoharan MS</strong>, Lee GC, Harper N, Meunier JA, et al. Aging Cell, 2025. 24(7):e70063.</div>
+          <span class="award-badge">&#9733; 2025 Anatomical Society Aging Cell Best Paper Prize</span><br>
+          <a class="pub-link" href="https://pubmed.ncbi.nlm.nih.gov/40264357" target="_blank" rel="noopener">PMID: 40264357</a>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-year">2023</div>
+        <div>
+          <div class="pub-journal">Nature Communications</div>
+          <div class="pub-title">Immune resilience despite inflammatory stress promotes longevity and favorable health outcomes including resistance to infection</div>
+          <div class="pub-meta">Ahuja SK, <strong>Manoharan MS</strong>, Lee GC, McKinnon LR, et al. Nature Communications, 2023. 14(1):3286.</div>
+          <span class="award-badge">&#9733; Top 25 COVID-19 articles of 2023, Nature Communications</span><br>
+          <a class="pub-link" href="https://pubmed.ncbi.nlm.nih.gov/37311745" target="_blank" rel="noopener">PMID: 37311745</a>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-year">2021</div>
+        <div>
+          <div class="pub-journal">J. Allergy &amp; Clinical Immunology</div>
+          <div class="pub-title">Immunologic resilience and COVID-19 survival advantage</div>
+          <div class="pub-meta">Lee GC, Restrepo MI, Harper NL, <strong>Manoharan MS</strong>, Smith AM, et al. JACI, 2021. 148(5):1176-1191.</div>
+          <a class="pub-link" href="https://www.ncbi.nlm.nih.gov/pubmed/34508765" target="_blank" rel="noopener">PMID: 34508765</a>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-year">2017</div>
+        <div>
+          <div class="pub-journal">J. Allergy &amp; Clinical Immunology</div>
+          <div class="pub-title">Preservation of epithelial cell barrier function and muted inflammation in resistance to allergic rhinoconjunctivitis from house dust mite challenge</div>
+          <div class="pub-meta">Ahuja SK, <strong>Manoharan MS</strong>, Harper N, Castiblanco J, Jimenez F, Martinez H, Ingale P, et al. JACI, 2017. 139(3):844-854.</div>
+          <a class="pub-link" href="https://www.ncbi.nlm.nih.gov/pubmed/27658763" target="_blank" rel="noopener">PMID: 27658763</a>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-year">2015</div>
+        <div>
+          <div class="pub-journal">PNAS</div>
+          <div class="pub-title">Epigenetic mechanisms, T-cell activation, and CCR5 genetics interact to regulate T-cell expression of CCR5, the major HIV-1 coreceptor</div>
+          <div class="pub-meta">Gornalusse GG, Mummidi S, Gaitan AA, Jimenez F, Ramsuran V, Picton A, Rogers K, <strong>Manoharan MS</strong>, Avadhanam N, et al. PNAS, 2015. 112(34):E4762-E4771.</div>
+          <span class="award-badge">&#9733; Selected for 'In This Issue' highlights, PNAS Editors</span><br>
+          <a class="pub-link" href="https://www.ncbi.nlm.nih.gov/pubmed/26307764" target="_blank" rel="noopener">PMID: 26307764</a>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-year">2014</div>
+        <div>
+          <div class="pub-journal">PLOS ONE</div>
+          <div class="pub-title">A miRNA Signature of Chemoresistant Mesenchymal Phenotype Identifies Novel Molecular Targets Associated with Advanced Pancreatic Cancer</div>
+          <div class="pub-meta">Bera A, VenkataSubbaRao K, <strong>Manoharan MS</strong>, Hill P, Freeman JW. PLOS ONE, 2014. DOI: 10.1371/journal.pone.0106343.</div>
+          <a class="pub-link" href="https://doi.org/10.1371/journal.pone.0106343" target="_blank" rel="noopener">DOI: 10.1371/journal.pone.0106343</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pub-secondary-list">
+      <div class="cluster-head" style="margin-top:36px;">Additional publications</div>
+      <div class="pub-secondary"><strong>Smith AM, Ramirez RM, et al.</strong> — Allergy, 2021. Large-scale provocation studies identify maladaptive responses to ubiquitous aeroallergens. [PMID: 34606106]</div>
+      <div class="pub-secondary"><strong>Smith AM, Harper N, et al.</strong> — JACI, 2021. Repetitive aeroallergen challenges elucidate maladaptive epithelial and inflammatory traits. [PMID: 33493557]</div>
+      <div class="pub-secondary"><strong>He W, Jimenez F, et al.</strong> — JACI, 2015. Cockroach sensitization mitigates allergic rhinoconjunctivitis symptom severity. Editor's Choice, Sep 2015. [PMID: 26026342]</div>
+      <div class="pub-secondary"><strong>Jacobs RL, Andrews CP, et al.</strong> — JACI, 2015. Symptom dynamics during repeated serial allergen challenge chamber exposures. [PMID: 25458003]</div>
+      <div class="pub-secondary"><strong>Bera A, Russ E, et al.</strong> — Military Medicine, 2020. Proteomic analysis of inflammatory biomarkers in breast cancer recurrence. [PMID: 32074342]</div>
+      <div class="pub-secondary"><strong>Bhattarai N, Welch JL, et al.</strong> — MDPI Proceedings, 2020. GB Virus C E2 inhibits PD-1-mediated T cell signaling dysfunction.</div>
+      <div class="pub-secondary"><strong>Martynova-Van Kley A, et al.</strong> — International Journal of Poultry Science, 2013. Pyrosequencing analysis of broiler cecal microbial communities.</div>
+    </div>
+  </section>
+
+  <section id="path">
+    <div class="section-head">
+      <h2 class="section-title">The path here</h2>
+      <span class="section-tag">bench to pipeline</span>
+    </div>
+    <div class="path-list">
+
+      <div class="path-item">
+        <div class="path-dot"></div>
+        <div class="path-date">06/2011 — present</div>
+        <div class="path-title">Research Fellow / Scientist / Scientist&#8209;Sr. &amp; Senior Bioinformatician</div>
+        <div class="path-org">UTHSCSA and Center for Personalized Medicine (CPM, STVHCS), San Antonio, TX</div>
+      </div>
+
+      <div class="path-item">
+        <div class="path-dot"></div>
+        <div class="path-date">03/2011 — 05/2011</div>
+        <div class="path-title">Research Scholar in Pathobiology</div>
+        <div class="path-org">Cleveland Clinic Foundation, Cleveland, OH — hyperammonemia-mediated myostatin expression in cirrhotic patients, under Dr. Srinivasan Dasarathy</div>
+      </div>
+
+      <div class="path-item">
+        <div class="path-dot"></div>
+        <div class="path-date">08/2009 — 12/2010</div>
+        <div class="path-title">Master's Thesis Research</div>
+        <div class="path-org">Stephen F. Austin State University — caecal microbiome of broilers via pyrosequencing</div>
+      </div>
+
+      <div class="path-item">
+        <div class="path-dot"></div>
+        <div class="path-date">09/2008 — 08/2010</div>
+        <div class="path-title">Graduate Teaching Assistant</div>
+        <div class="path-org">Stephen F. Austin State University — freshman biology laboratory sessions</div>
+      </div>
+
+      <div class="path-item">
+        <div class="path-dot"></div>
+        <div class="path-date">08/2007 — 07/2008</div>
+        <div class="path-title">Research Investigator and Technical Trainer</div>
+        <div class="path-org">Life Teck Research Centre, Chennai, India</div>
+      </div>
+
+      <div class="path-item">
+        <div class="path-dot"></div>
+        <div class="path-date">05/2007 — 07/2007</div>
+        <div class="path-title">Summer Research Fellow</div>
+        <div class="path-org">IISc-INSA-NASI Summer Research Fellowship, NBRC, India — Parkinson's disease signaling pathways, with Dr. Vijayalakshmi Ravindranath</div>
+      </div>
+
+      <div class="path-item">
+        <div class="path-dot"></div>
+        <div class="path-date">12/2006 — 05/2007</div>
+        <div class="path-title">Bachelor's Thesis Project</div>
+        <div class="path-org">St. Peter's Engineering College, Chennai, India — in vitro cytotoxicity of tetrodotoxin from Vibrio alginolyticus</div>
+      </div>
+
+      <div class="path-item">
+        <div class="path-dot"></div>
+        <div class="path-date">06/2005 — 07/2006</div>
+        <div class="path-title">Technical Trainee — Certification Course</div>
+        <div class="path-org">Biomedical Engineering Research Foundation (BMERF), Salem, India — immuno-biotechnology and animal cell culture, under Dr. R. Saravanan</div>
+      </div>
+
+      <div class="path-item">
+        <div class="path-dot"></div>
+        <div class="path-date">05/2005</div>
+        <div class="path-title">Industrial Trainee</div>
+        <div class="path-org">The Madras Pharmaceuticals, Chennai, India — microbial techniques and QC/QA</div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+      <div>
+        <div class="cluster-head">M.S. — Biotechnology</div>
+        <div class="path-title">Stephen F. Austin State University</div>
+        <div class="path-org">Nacogdoches, TX &middot; 08/2008 – 12/2010 &middot; GPA 3.95/4.0</div>
+      </div>
+      <div>
+        <div class="cluster-head">B.Tech. — Industrial Biotechnology</div>
+        <div class="path-title">St. Peter's Engineering College, Anna University</div>
+        <div class="path-org">Chennai, India &middot; 06/2003 – 05/2007 &middot; GPA 3.93/4.0, University Rank Holder</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-name">Muthu Saravanan Manoharan</div>
+    <div class="footer-links">
+      <a href="mailto:msm545@gmx.com">msm545@gmx.com</a>
+      <a href="https://www.linkedin.com/in/muthusaravananmanoharan/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://scholar.google.com/citations?hl=en&user=24xinGsAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const topbar = document.getElementById('topbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 480) topbar.classList.add('show');
+    else topbar.classList.remove('show');
+  });
+</script>
+
+</body>
+</html>
